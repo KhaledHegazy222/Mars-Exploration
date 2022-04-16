@@ -1,17 +1,12 @@
+#include <iostream>
 #include <exception>
-
-
 #include "dynamicArray.h"
-
 
 
 
 #pragma region CONSTRUCTOR_DESTRUCTOR
 
-
-
 // Constructors
-
 template <typename var>
 dynamicArray<var>::dynamicArray(){
 	vec = new var[1];
@@ -70,8 +65,6 @@ dynamicArray<var>::~dynamicArray(){
     delete[]vec;
 }
 
-
-
 #pragma endregion
 
 
@@ -95,9 +88,6 @@ void dynamicArray<var>::updateSize(){
     
 }
 
-
-
-
 // Public Methods
 
 template <typename var>
@@ -106,7 +96,6 @@ var& dynamicArray<var>::front(){
 		throw std::runtime_error("Empty Dynamic Array");
 	return vec[0];
 }
-
 
 template <typename var>
 var& dynamicArray<var>::back(){
@@ -148,9 +137,7 @@ void dynamicArray<var>::clear(){
 
 #pragma region OPERATORS
 
-
 // Operators 
-
 template<typename var>
 var& dynamicArray<var>::operator[](int idx){
 	if(idx >= currentSize)
@@ -159,11 +146,8 @@ var& dynamicArray<var>::operator[](int idx){
 }
 
 template<typename var>
-dynamicArray<var>& dynamicArray<var>::operator=(dynamicArray<var>& other){
+dynamicArray<var> dynamicArray<var>::operator=(dynamicArray<var> other){
 	
-	// Handling self assignment Case 
-	if(this == &other) 
-		return *this;
 
 	currentSize = other.currentSize;
 	capacity = other.capacity;
@@ -176,7 +160,5 @@ dynamicArray<var>& dynamicArray<var>::operator=(dynamicArray<var>& other){
 
 	return *this;
 }
-
-
 
 #pragma endregion

@@ -2,8 +2,6 @@
 	#define DYNAMIC_ARRAY_H
 
 
-
-	
 	template <typename var> 
 	class dynamicArray
 	{
@@ -38,13 +36,9 @@
 
 			// Operators
 			var& operator[] (int);
-			dynamicArray<var>& operator=(dynamicArray<var>&);
+			dynamicArray<var> operator=(dynamicArray<var>);
 
 	};
-
-	
-
-
 
 	#include "dynamicArray.cpp"
 	
