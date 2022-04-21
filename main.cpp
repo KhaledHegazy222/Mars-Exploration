@@ -747,6 +747,12 @@ void initializeRovers(queue<int>&ERovers,queue<int>&MRovers,queue<int>&PRovers){
 }
 void outputFile(){
     sort(statics.begin(),statics.end());
+
+
+    if(!statics.size()){
+        fout << "No Mission Has been Completed\n";
+        return;
+    }
     
     fout << right << setw(4) << "CD" << " ";
     fout << right << setw(4) << "ID" << " ";
