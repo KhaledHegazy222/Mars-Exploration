@@ -32,7 +32,10 @@
 			void popBack();
 			int size();
 			void clear();
+			void resize(int);
 			
+			var* begin();
+			var* end();
 
 			// Operators
 			var& operator[] (int);

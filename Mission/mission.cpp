@@ -1,11 +1,13 @@
 #include "mission.h"
-
+#include "../Configurations/configuration.h"
 int mission::EmergencyMissions;
 int mission::MountainousMissions;
 int mission::PolarMissions;
 
 
 
+
+mission::mission(){}
 
 mission::mission(type missionType,int formulationDay,double targetLocation,int missionDuration,int significance,int ID) : 
     missionType(missionType), 
@@ -14,7 +16,6 @@ mission::mission(type missionType,int formulationDay,double targetLocation,int m
     missionDuration(missionDuration), 
     significance(significance), 
     ID(ID) {}
-
 
 
 void mission::finishMission(){
@@ -31,17 +32,27 @@ void mission::finishMission(){
         PolarMissions++;
         break;
     }
+
 }
 
 
 int mission::completedEmergencyMissions(){
-    return mission::EmergencyMissions;
+    return EmergencyMissions;
 }
 
 int mission::completedMountainousMissions(){
-    return mission::MountainousMissions;
+    return MountainousMissions;
 }
 
 int mission::completedPolarMissions(){
-    return mission::PolarMissions;
+    return PolarMissions;
 }
+
+double mission::priority(){
+    if(missionType == Mountainous || missionType == Polar)
+        return 0;
+    return (1.0 / formulationDay) + 0.5 * (1.0 / targetLocation ) + 0.5 * (1.0 / missionDuration) + 3 * significance;
+    
+}
+
+

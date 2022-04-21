@@ -4,12 +4,12 @@
 
     #include "../Dynamic_Array/dynamicArray.h"
 
-
     template<typename var>
     class priorityQueue
     {   
         private:
             dynamicArray<var>heap;
+            int (*cmpFun)(var&,var&);
 
 
 
@@ -21,6 +21,9 @@
 
 
         public:
+            
+            priorityQueue();
+            priorityQueue(int (*)(var&,var&));
 
             void push(var);
             var& top();

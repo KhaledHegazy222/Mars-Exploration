@@ -132,6 +132,29 @@ void dynamicArray<var>::clear(){
 	currentSize = 0;
 }
 
+template <typename var>
+void dynamicArray<var>::resize(int size){
+	delete[]vec;
+	vec = new var[size];
+	capacity = size;
+	currentSize = size;
+
+	
+}
+
+
+
+template <typename var>
+var* dynamicArray<var>::begin(){
+	return vec;
+}
+
+template <typename var>
+var* dynamicArray<var>::end(){
+	return vec + currentSize;
+}
+
+
 #pragma endregion
 
 

@@ -2,9 +2,7 @@
     #define MISSION_H
 
     #include "../Configurations/configuration.h"
-
-    
-
+    #include "../Rover/rover.h"
 
     class mission
     {   
@@ -17,20 +15,33 @@
         public:
             
             type missionType;
+            missionStatus currentStatus;
+            int ID;
             int formulationDay;
-            double targetLocation;
             int missionDuration;
             int significance;
-            int ID;
+            int startDay;
+            int assignedRover;
+            double targetLocation;
 
-        
-            mission(type,int,double,int,int,int); 
-            // Mission Type (enum missionType) - Formulation Day (int) - Target Location (double) - Mission Duration (int) - Significance (int) - ID (int)
+
+
+            
+            mission();
+
+            mission(type,int,double,int,int,int);
+
+
+
             void finishMission();
 
-            int completedEmergencyMissions();
-            int completedMountainousMissions();
-            int completedPolarMissions();
+            static int completedEmergencyMissions();
+            static int completedMountainousMissions();
+            static int completedPolarMissions();
+
+            double priority();
+            
+
     };
 
     #include "mission.cpp"

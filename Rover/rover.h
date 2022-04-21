@@ -8,22 +8,27 @@
 
     class rover
     {
-        private:
-        
+            
 
         public:
+
+            static int availableEmergencyRovers;
+            static int availableMountainousRovers;
+            static int availablePolarRovers;
 
             type roverType;
             int checkupDuration;
             int missionsLeftForCheckup;
-            int daysLeftForMaintenance;
+            int maintenanceEndDate;
             double speed;
             int ID;
 
 
+            
+            void free();
+            void maintain();
 
-            rover(type,int,int,int,double,int);
-
+        
 
 
 
@@ -34,7 +39,7 @@
     
     
 
-
+    #include "rover.cpp"
 
 
 
