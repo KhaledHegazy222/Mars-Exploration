@@ -146,7 +146,18 @@ int main(int argc,char** argv){
 
             events.pop();
         }
-         
+        
+        while(pendMmissions.size()){
+            mission& ms = totalMissions[pendMmissions.front()];
+            if(ms.formulationDay + setup.maxTimeToPromote){
+                ms.missionType = Emergency;
+                pendEmissions.push(ms.ID);
+                promote[ms.ID] = true;
+            }
+            else{
+                break;
+            }
+        }
 
         // Cancelling Pending & Executing Missions 
         for(int i = 0;i < cancel.size();i++){ 
@@ -171,7 +182,7 @@ int main(int argc,char** argv){
 
         // Promoting Pending Missions
         for(int i = 0;i < promote.size();i++){
-            if(totalMissions[promote[i]].currentStatus == Pending){
+            if(totalMissions[promote[i]].currentStatus == Pending && !promoted[promote[i]]){
                 totalMissions[promote[i]].missionType = Emergency;
                 promoted[promote[i]] = true;
                 pendEmissions.push(promote[i]);
@@ -223,7 +234,7 @@ int main(int argc,char** argv){
         while(execMmissions.size()){
             mission& MMission = totalMissions[execMmissions.front()];
             
-            if(MMission.currentStatus == Cancelled){
+            if(MMission.currentStatus == Cancelled || promoted[MMission.ID]){
                 execMmissions.pop();
             }
             else if(completeMissionTime(MMission.ID) <= currentDay){
@@ -404,6 +415,11 @@ int main(int argc,char** argv){
 
                 rover& rv = totalRovers[MRovers.front()];                   
                 mission& ms = totalMissions[pendMmissions.front()];
+                if(promoted[ms.ID]){
+                    rover::availableMountainousRovers++;
+                    pendMmissions.pop();
+                    continue;
+                }
                 
                 ms.assignedRover = rv.ID;
                 ms.currentStatus = Executing;
