@@ -149,10 +149,11 @@ int main(int argc,char** argv){
         
         while(pendMmissions.size()){
             mission& ms = totalMissions[pendMmissions.front()];
-            if(ms.formulationDay + setup.maxTimeToPromote){
+            if(ms.formulationDay + setup.maxTimeToPromote <= currentDay && ( rover::availableEmergencyRovers || rover::availablePolarRovers)){
                 ms.missionType = Emergency;
                 pendEmissions.push(ms.ID);
-                promote[ms.ID] = true;
+                pendMmissions.pop();
+                promoted[ms.ID] = true;
             }
             else{
                 break;
@@ -354,15 +355,15 @@ int main(int argc,char** argv){
                 rover::availableMountainousRovers--;
 
                 rover& rv = totalRovers[MRovers.front()];                   
-                mission& ms = totalMissions[pendMmissions.front()];
+                mission& ms = totalMissions[pendEmissions.top()];
                 
                 ms.assignedRover = rv.ID;
                 ms.currentStatus = Executing;
                 ms.startDay = currentDay;
 
                 MRovers.pop();
-                pendMmissions.pop();
-                execMmissions.push(ms.ID);
+                pendEmissions.pop();
+                execEmissions.push(ms.ID);
                 
             }
             else if(rover::availablePolarRovers){
@@ -370,15 +371,15 @@ int main(int argc,char** argv){
                 rover::availablePolarRovers--;
 
                 rover& rv = totalRovers[PRovers.front()];                   
-                mission& ms = totalMissions[pendPmissions.front()];
+                mission& ms = totalMissions[pendEmissions.top()];
                 
                 ms.assignedRover = rv.ID;
                 ms.currentStatus = Executing;
                 ms.startDay = currentDay;
 
                 PRovers.pop();
-                pendPmissions.pop();
-                execPmissions.push(ms.ID);
+                pendEmissions.pop();
+                execEmissions.push(ms.ID);
             }
             else{
                 break;
@@ -435,15 +436,15 @@ int main(int argc,char** argv){
                 rover::availableEmergencyRovers--;
 
                 rover& rv = totalRovers[ERovers.front()];                   
-                mission& ms = totalMissions[pendEmissions.top()];
+                mission& ms = totalMissions[pendMmissions.front()];
                 
                 ms.assignedRover = rv.ID;
                 ms.currentStatus = Executing;
                 ms.startDay = currentDay;
 
                 ERovers.pop();
-                pendEmissions.pop();
-                execEmissions.push(ms.ID);
+                pendMmissions.pop();
+                execMmissions.push(ms.ID);
 
             }
             else{
@@ -763,7 +764,7 @@ void outputFile(){
     fout << "-------------------------\n";
     fout << "-------------------------\n";
     int totalCompletedMissions = mission::completedEmergencyMissions() + mission::completedMountainousMissions() + mission::completedPolarMissions();
-    fout << "Missions: " << totalCompletedMissions << " [M: " << mission::completedMountainousMissions() << ", P: " << mission::completedPolarMissions() << ", E: " << mission::completedEmergencyMissions << "]\n";
+    fout << "Missions: " << totalCompletedMissions << " [M: " << mission::completedMountainousMissions() << ", P: " << mission::completedPolarMissions() << ", E: " << mission::completedEmergencyMissions() << "]\n";
     int totalAvailableRovers = rover::availableEmergencyRovers + rover::availableMountainousRovers + rover::availablePolarRovers;
     fout << "Rover: " << totalAvailableRovers << " [M: " << rover::availableMountainousRovers << ", P: " << rover::availablePolarRovers << ", E: " << rover::availableEmergencyRovers << "]\n";
     fout << "Avg Wait = " << result::totalWaiting() / statics.size() << ", Avg Execution = " << result::totalExecution() / statics.size()  << endl;
